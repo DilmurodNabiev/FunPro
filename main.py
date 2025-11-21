@@ -36,7 +36,28 @@ class Workout:
 
 
 def validation(workout: Workout):
-    pass
+    if not isinstance(workout, Workout):
+        return "The function add_workout expects Workout object"
+
+    if not isinstance(workout.date, datetime.datetime):
+        return "Workout date must be 'datetime' object"
+
+    try:
+        workout.id = int(workout.id)
+    except ValueError as e:
+        return f"Wrokout ID must be intager. \nError message: {e}"
+    
+    try:
+        workout.calories = float(workout.calories)
+    except ValueError as e:
+        return f"Wrokout calories must be float or intager. \nError message: {e}"
+
+    try:
+        workout.duration = float(workout.duration)
+    except ValueError as e:
+        return f"Wrokout duration(in mins) must be float or intager. \nError message: {e}"
+    
+    return True
 
         
 def normilize():
