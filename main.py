@@ -21,21 +21,21 @@ class Workout:
             f"{"-"*3} Calories:{self.calories}\n"
             f"{"-"*3} Duration(in minutes):{self.duration}\n"
             )
-    def add_workout():
-        pass
 
-    def to_dict(): # Loades data from JSON and turns it to Dictionary
-        pass
+    def to_dict(self): # Loades data from JSON and turns it to Dictionary
+        if validation(self) != True:
+            return validation(self)
+        return {
+            "id": self.id,
+            "date": self.date.strftime("%Y-%m-%d %H:%M:%S"),
+            "name": self.name.casefold().strip(),
+            "calories": self.calories,
+            "duration": self.duration
+        }
 
-    def update():  # Updates the data in JSON databse
-        pass
-
-    def display(): # Displays data from databse
-        pass
 
 
-
-def validation_normalization(workout: Workout) -> dict | str:
+def validation(workout: Workout) -> dict | str:
     if not isinstance(workout, Workout):
         return "The function add_workout expects Workout object"
 
@@ -57,40 +57,41 @@ def validation_normalization(workout: Workout) -> dict | str:
     except ValueError as e:
         return f"Wrokout duration(in mins) must be float or intager. \nError message: {e}"
     
-    workout_dict = {
-        "id": workout.id,
-        "date": workout.date.strftime("%Y-%m-%d %H:%M:%S"),
-        "name": workout.name.casefold().strip(),
-        "calories": workout.calories,
-        "duration": workout.duration
-    }
-
-    return workout_dict
+    return True
     
+def load_database() -> list:
+    if not os.path.exists("workouts_db.json"):
+        with open("workouts_db.json", "w") as db_file:
+            json.dump([], db_file)
+
+    with open("workouts_db.json", "r") as db_file:
+        data = json.load(db_file)
+    
+    return data
+
+def add_workout(workout: Workout) -> str:
+    validation_result = validation(workout)
+    if validation_result != True:
+        return validation_result
+
+    data = load_database()
+    data.append(workout.to_dict())
+
+    with open("workouts_db.json", "w") as db_file:
+        json.dump(data, db_file, indent=4)
+
+    return "Workout added successfully."
 
 
-# def update_workout(workout_id): 
-#     pass
 
-# def remove_workout(workout_id):
-#     pass
-
-# def view_workouts():
-#     pass
-
-# def totals():
-#     pass
-
-# def filter(criteria):
-#     pass
-
-# def sort(criteria):
-#     pass
-
+# Test
 date = datetime.datetime.now()
 
 new_workout = Workout("101", date, "squats", "15", 15.5)
+new_workou2 = Workout("112", date, "squats", 15, "15.5")
 
-print(validation_normalization(new_workout))
+
+print(add_workout(new_workout))
+print(add_workout(new_workou2))
 
 
