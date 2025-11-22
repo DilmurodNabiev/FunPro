@@ -1,20 +1,6 @@
 [
     {
-        "id": 101,
-        "date": "2025-11-22 15:56:27",
-        "name": "squats",
-        "calories": 15.0,
-        "duration": 15.5
-    },
-    {
-        "id": 101,
-        "date": "2025-11-22 15:56:59",
-        "name": "squats",
-        "calories": 15.0,
-        "duration": 15.5
-    },
-    {
-        "id": 101,
+        "id": 112,
         "date": "2025-11-22 15:57:09",
         "name": "squats",
         "calories": 15.0,
@@ -22,7 +8,7 @@
     },
     {
         "id": 112,
-        "date": "2025-11-22 15:57:09",
+        "date": "2025-11-22 16:04:58",
         "name": "squats",
         "calories": 15.0,
         "duration": 15.5

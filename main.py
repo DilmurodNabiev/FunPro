@@ -69,11 +69,19 @@ def load_database() -> list:
     
     return data
 
+def is_workout_id_exists(workout_id: int) -> bool:
+    data = load_database()
+    for workout in data:
+        if workout["id"] == workout_id:
+            return True
+    return False
+
 def add_workout(workout: Workout) -> str:
     validation_result = validation(workout)
     if validation_result != True:
         return validation_result
-
+    if is_workout_id_exists(workout.id):
+        return "Workout ID already exists. Please use a unique ID."
     data = load_database()
     data.append(workout.to_dict())
 
@@ -82,7 +90,17 @@ def add_workout(workout: Workout) -> str:
 
     return "Workout added successfully."
 
+def delete_workout(workout_id: int) -> str:
+    data = load_database()
+    new_data = [workout for workout in data if workout["id"] != workout_id]
 
+    if len(data) == len(new_data):
+        return "Workout ID not found."
+
+    with open("workouts_db.json", "w") as db_file:
+        json.dump(new_data, db_file, indent=4)
+
+    return "Workout deleted successfully."
 
 # Test
 date = datetime.datetime.now()
@@ -90,8 +108,5 @@ date = datetime.datetime.now()
 new_workout = Workout("101", date, "squats", "15", 15.5)
 new_workou2 = Workout("112", date, "squats", 15, "15.5")
 
-
 print(add_workout(new_workout))
-print(add_workout(new_workou2))
-
-
+print(delete_workout(112))
