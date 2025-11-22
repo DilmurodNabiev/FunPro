@@ -35,7 +35,7 @@ class Workout:
 
 
 
-def validation(workout: Workout):
+def validation_normalization(workout: Workout) -> dict | str:
     if not isinstance(workout, Workout):
         return "The function add_workout expects Workout object"
 
@@ -57,11 +57,17 @@ def validation(workout: Workout):
     except ValueError as e:
         return f"Wrokout duration(in mins) must be float or intager. \nError message: {e}"
     
-    return True
+    workout_dict = {
+        "id": workout.id,
+        "date": workout.date.strftime("%Y-%m-%d %H:%M:%S"),
+        "name": workout.name.casefold().strip(),
+        "calories": workout.calories,
+        "duration": workout.duration
+    }
 
-        
-def normilize():
-    pass
+    return workout_dict
+    
+
 
 # def update_workout(workout_id): 
 #     pass
@@ -81,9 +87,10 @@ def normilize():
 # def sort(criteria):
 #     pass
 
-# date = datetime.datetime.now()
+date = datetime.datetime.now()
 
-# new_workout = Workout("sdf", date, "squats", "15", 15.5)
+new_workout = Workout("101", date, "squats", "15", 15.5)
 
-# print(add_workout(new_workout))
+print(validation_normalization(new_workout))
+
 
