@@ -102,6 +102,21 @@ def delete_workout(workout_id: int) -> str:
 
     return "Workout deleted successfully."
 
+
+def update_workout(workout_id: int, updated_workout: Workout) -> str:
+    validation_result = validation(updated_workout)
+    if validation_result != True:
+        return validation_result
+
+    data = load_database()
+    for index, workout in enumerate(data):
+        if workout["id"] == workout_id:
+            data[index] = updated_workout.to_dict()
+            with open("workouts_db.json", "w") as db_file:
+                json.dump(data, db_file, indent=4)
+            return "Workout updated successfully."
+
+    return "Workout ID not found."
 # Test
 date = datetime.datetime.now()
 
