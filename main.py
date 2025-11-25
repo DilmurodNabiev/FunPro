@@ -130,7 +130,7 @@ def sort_workouts(key) -> list:
     except KeyError:
         return f"Invalid key: {key}. Valid keys are 'id', 'date', 'name', 'calories', 'duration'."
     
-def filter_workouts():
+def filter_workouts(): # i cant imagine how it should work 
     pass
 # Test
 date = datetime.datetime.now()
