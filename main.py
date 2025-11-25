@@ -117,6 +117,21 @@ def update_workout(workout_id: int, updated_workout: Workout) -> str:
             return "Workout updated successfully."
 
     return "Workout ID not found."
+
+def show_all_workouts() -> list:
+    data = load_database()
+    return data 
+
+def sort_workouts(key) -> list:
+    data = load_database()
+    try:
+        sorted_data = sorted(data, key=lambda x: x[key])
+        return sorted_data
+    except KeyError:
+        return f"Invalid key: {key}. Valid keys are 'id', 'date', 'name', 'calories', 'duration'."
+    
+def filter_workouts():
+    pass
 # Test
 date = datetime.datetime.now()
 
