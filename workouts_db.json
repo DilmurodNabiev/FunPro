@@ -5,5 +5,26 @@
         "name": "squats",
         "calories": 15.0,
         "duration": 15.5
+    },
+    {
+        "id": 112,
+        "date": "2025-12-10 11:37:26",
+        "name": "squats",
+        "calories": 15.0,
+        "duration": 15.5
+    },
+    {
+        "id": 177,
+        "date": "2025-12-10 11:38:10",
+        "name": "push-ups",
+        "calories": 15.0,
+        "duration": 15.5
+    },
+    {
+        "id": 69,
+        "date": "2025-12-10 11:38:10",
+        "name": "pull-ups",
+        "calories": 15.0,
+        "duration": 15.5
     }
 ]

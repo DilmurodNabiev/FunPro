@@ -128,15 +128,26 @@ def sort_workouts(key) -> list:
         sorted_data = sorted(data, key=lambda x: x[key])
         return sorted_data
     except KeyError:
-        return f"Invalid key: {key}. Valid keys are 'id', 'date', 'name', 'calories', 'duration'."
+        return f"Invalid key: {key}."
     
-def filter_workouts(): # i cant imagine how it should work 
-    pass
+def filter_workouts(filtering_obj) -> list:  
+    data = load_database()
+    key, value = filtering_obj
+    filtered_data = [workout for workout in data if str(workout.get(key, "")).casefold() == str(value).casefold()]
+    return filtered_data
+
 # Test
 date = datetime.datetime.now()
 
-new_workout = Workout("101", date, "squats", "15", 15.5)
-new_workou2 = Workout("112", date, "squats", 15, "15.5")
+new_workout1 = Workout("101", date, "squats", "15", 15.5)
+new_workout2 = Workout("112", date, "squats", 15, "15.5")
+new_workout3 = Workout("177", date, "push-ups", 15, "15.5")
+new_workout4 = Workout("69", date, "pull-ups", 15, "15.5")
 
-print(add_workout(new_workout))
-print(delete_workout(112))
+print(add_workout(new_workout1))
+print(add_workout(new_workout2))
+print(add_workout(new_workout3))
+print(add_workout(new_workout4))
+
+print(filter_workouts(("name", "squats")))
+# print(delete_workout(112))
