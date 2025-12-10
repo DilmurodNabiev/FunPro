@@ -35,6 +35,7 @@ class Workout:
 
 
 
+
 def validation(workout: Workout) -> dict | str:
     if not isinstance(workout, Workout):
         return "The function add_workout expects Workout object"
@@ -136,18 +137,4 @@ def filter_workouts(filtering_obj) -> list:
     filtered_data = [workout for workout in data if str(workout.get(key, "")).casefold() == str(value).casefold()]
     return filtered_data
 
-# Test
-date = datetime.datetime.now()
 
-new_workout1 = Workout("101", date, "squats", "15", 15.5)
-new_workout2 = Workout("112", date, "squats", 15, "15.5")
-new_workout3 = Workout("177", date, "push-ups", 15, "15.5")
-new_workout4 = Workout("69", date, "pull-ups", 15, "15.5")
-
-print(add_workout(new_workout1))
-print(add_workout(new_workout2))
-print(add_workout(new_workout3))
-print(add_workout(new_workout4))
-
-print(filter_workouts(("name", "squats")))
-# print(delete_workout(112))
