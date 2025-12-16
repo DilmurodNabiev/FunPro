@@ -33,9 +33,6 @@ class Workout:
             "duration": self.duration
         }
 
-
-
-
 def validation(workout: Workout) -> dict | str:
     if not isinstance(workout, Workout):
         return "The function add_workout expects Workout object"
