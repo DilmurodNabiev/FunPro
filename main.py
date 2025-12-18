@@ -36,8 +36,6 @@ class Workout:
 
 obj = Workout(1, datetime.datetime.now(), "Running", 300, 30)
 
-print(obj)
-
 def validation(id, date, name, calories, duration) -> dict | str:
 
     if not isinstance(date, datetime.datetime):
@@ -140,6 +138,8 @@ def filter_workouts(filtering_obj) -> list:
     key, value = filtering_obj
     filtered_data = [workout for workout in data if str(workout.get(key, "")).casefold() == str(value).casefold()]
     return filtered_data
+
+
 
 if __name__ == "__main__":
     # Example usage

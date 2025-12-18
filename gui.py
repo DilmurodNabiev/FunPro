@@ -110,11 +110,30 @@ def update_workout_window():
 
     window.close()
 
-
 def show_workouts_window():
     data = show_all_workouts()
-    popup_result(data)
+        
+    table_data = [[workout['id'], workout['date'], workout['name'], 
+                   workout['calories'], workout['duration']] for workout in data]
+        
+    layout = [
+        [sg.Text("All Workouts", font=("Arial", 14))],
+        [sg.Table(values=table_data, 
+                    headings=['ID', 'Date', 'Name', 'Calories', 'Duration (min)'],
+                    size=(80, 20),
+                    auto_size_columns=False,
+                    col_widths=[8, 20, 20, 12, 12])],
+        [sg.Button("Back")]
+        ]
+        
+    window = sg.Window("All Workouts", layout)
+        
+    while True:
+        event, _ = window.read()
+        if event in (sg.WINDOW_CLOSED, "Back"):
+            break
 
+    window.close()
 
 def sort_workouts_window():
     layout = [
