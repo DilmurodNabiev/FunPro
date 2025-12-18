@@ -1,12 +1,5 @@
 [
     {
-        "id": 101,
-        "date": "2025-11-23 00:55:13",
-        "name": "squats",
-        "calories": 15.0,
-        "duration": 15.5
-    },
-    {
         "id": 112,
         "date": "2025-12-10 11:37:26",
         "name": "squats",
@@ -33,5 +26,12 @@
         "name": "cycling",
         "calories": 250.0,
         "duration": 45.0
+    },
+    {
+        "id": 777,
+        "date": "2025-12-18 12:41:22",
+        "name": "java",
+        "calories": 100000.0,
+        "duration": 100000.0
     }
 ]

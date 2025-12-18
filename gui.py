@@ -7,7 +7,8 @@ from main import (
     update_workout,
     show_all_workouts,
     sort_workouts,
-    filter_workouts
+    filter_workouts,
+    total_caloriesDuration
 )
 
 sg.theme("DarkBlue3")
@@ -115,7 +116,8 @@ def show_workouts_window():
         
     table_data = [[workout['id'], workout['date'], workout['name'], 
                    workout['calories'], workout['duration']] for workout in data]
-        
+    table_data.append([])  # Empty row before totals
+    table_data.append(['Total', '', '', total_caloriesDuration()[0], total_caloriesDuration()[1]])
     layout = [
         [sg.Text("All Workouts", font=("Arial", 14))],
         [sg.Table(values=table_data, 
