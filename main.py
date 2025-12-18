@@ -139,10 +139,14 @@ def filter_workouts(filtering_obj) -> list:
     filtered_data = [workout for workout in data if str(workout.get(key, "")).casefold() == str(value).casefold()]
     return filtered_data
 
-
+def total_caloriesDuration() -> set:
+    data = load_database()
+    total_calories = sum(workout["calories"] for workout in data)
+    total_duration = sum(workout["duration"] for workout in data)
+    return (total_calories, total_duration)
 
 if __name__ == "__main__":
-    # Example usage
+    # test
     print(add_workout(1, datetime.datetime.now(), "Running", 300, 30))
     print(add_workout(2, datetime.datetime.now(), "Cycling", 250, 45))
     print(show_all_workouts())
@@ -150,3 +154,4 @@ if __name__ == "__main__":
     print(filter_workouts(("name", "running")))
     print(delete_workout(1))
     print(show_all_workouts())
+    print(total_caloriesDuration())
