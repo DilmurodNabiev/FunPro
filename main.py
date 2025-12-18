@@ -12,19 +12,20 @@ class Workout:
         self.calories = calories
         self.duration = duration_min
 
-    def __str__(self):
-        return(
-            f"Workout created:\n"
-            f"{"-"*3} ID:{self.id}\n"
-            f"{"-"*3} Date:{self.date}\n"
-            f"{"-"*3} Name:{self.name}\n"
-            f"{"-"*3} Calories:{self.calories}\n"
-            f"{"-"*3} Duration(in minutes):{self.duration}\n"
+        def __str__(self):
+            return (
+                f"Workout created:\n"
+                f"--- ID: {self.id}\n"
+                f"--- Date: {self.date}\n"
+                f"--- Name: {self.name}\n"
+                f"--- Calories: {self.calories}\n"
+                f"--- Duration (minutes): {self.duration}\n"
             )
 
+
     def to_dict(self): # Loades data from JSON and turns it to Dictionary
-        if validation(self) != True:
-            return validation(self)
+        if type(validation(self.id, self.date, self.name, self.calories, self.duration)) == str:
+            return validation(self.id, self.date, self.name, self.calories, self.duration)
         return {
             "id": self.id,
             "date": self.date.strftime("%Y-%m-%d %H:%M:%S"),
@@ -33,29 +34,37 @@ class Workout:
             "duration": self.duration
         }
 
-def validation(workout: Workout) -> dict | str:
-    if not isinstance(workout, Workout):
-        return "The function add_workout expects Workout object"
+obj = Workout(1, datetime.datetime.now(), "Running", 300, 30)
 
-    if not isinstance(workout.date, datetime.datetime):
+print(obj)
+
+def validation(id, date, name, calories, duration) -> dict | str:
+
+    if not isinstance(date, datetime.datetime):
         return "Workout date must be 'datetime' object"
 
     try:
-        workout.id = int(workout.id)
+        id = int(id)
     except ValueError as e:
         return f"Wrokout ID must be intager. \nError message: {e}"
     
     try:
-        workout.calories = float(workout.calories)
+        calories = float(calories)
     except ValueError as e:
         return f"Wrokout calories must be float or intager. \nError message: {e}"
 
     try:
-        workout.duration = float(workout.duration)
+        duration = float(duration)
     except ValueError as e:
         return f"Wrokout duration(in mins) must be float or intager. \nError message: {e}"
     
-    return True
+    return {
+        "id": id,
+        "date": date,
+        "name": name.casefold().strip(),
+        "calories": calories,
+        "duration": duration
+    }
     
 def load_database() -> list:
     if not os.path.exists("workouts_db.json"):
@@ -74,14 +83,12 @@ def is_workout_id_exists(workout_id: int) -> bool:
             return True
     return False
 
-def add_workout(workout: Workout) -> str:
-    validation_result = validation(workout)
-    if validation_result != True:
-        return validation_result
-    if is_workout_id_exists(workout.id):
+def add_workout(id: int, date: datetime, name: str, calories: float, duration: float) -> str:
+    validation_result = validation(id, date, name, calories, duration)
+    if is_workout_id_exists(validation_result["id"]):
         return "Workout ID already exists. Please use a unique ID."
     data = load_database()
-    data.append(workout.to_dict())
+    data.append(Workout(validation_result["id"], validation_result["date"], validation_result["name"], validation_result["calories"], validation_result["duration"]).to_dict())
 
     with open("workouts_db.json", "w") as db_file:
         json.dump(data, db_file, indent=4)
@@ -102,7 +109,7 @@ def delete_workout(workout_id: int) -> str:
 
 
 def update_workout(workout_id: int, updated_workout: Workout) -> str:
-    validation_result = validation(updated_workout)
+    validation_result = validation(updated_workout.id, updated_workout.date, updated_workout.name, updated_workout.calories, updated_workout.duration)
     if validation_result != True:
         return validation_result
 
@@ -134,4 +141,12 @@ def filter_workouts(filtering_obj) -> list:
     filtered_data = [workout for workout in data if str(workout.get(key, "")).casefold() == str(value).casefold()]
     return filtered_data
 
-
+if __name__ == "__main__":
+    # Example usage
+    print(add_workout(1, datetime.datetime.now(), "Running", 300, 30))
+    print(add_workout(2, datetime.datetime.now(), "Cycling", 250, 45))
+    print(show_all_workouts())
+    print(sort_workouts("calories"))
+    print(filter_workouts(("name", "running")))
+    print(delete_workout(1))
+    print(show_all_workouts())

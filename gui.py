@@ -1,27 +1,198 @@
-import main
 import FreeSimpleGUI as sg
-import webbrowser
+import datetime
+from main import (
+    Workout,
+    add_workout,
+    delete_workout,
+    update_workout,
+    show_all_workouts,
+    sort_workouts,
+    filter_workouts
+)
 
-layout = [
-    [sg.Text("Welcome to FTA")],
-    [sg.Button("GitHub Repository", key="-GIT-")],
-    [sg.Text("")],
-    [sg.Button("Add New Workout")],
-    [sg.Button("Delete Workout")],
-    [sg.Button("Update Workout")],
-    [sg.Button("Show All Workouts")],
+sg.theme("DarkBlue3")
 
-]
 
-window = sg.Window("Fitnes Tracker App (FTA)", layout)
 
-while True:
-    event, values = window.read()
+def popup_result(result):
+    sg.popup_scrolled(str(result), title="Result", size=(60, 15))
 
-    if event == sg.WINDOW_CLOSED or event == 'Quit':
-        break
-    elif event == "-GIT-":
-        webbrowser.open("https://github.com/DilmurodNabiev/FunPro")
 
-window.close()
+def parse_date(date_str):
+    return datetime.datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
 
+
+
+def add_workout_window():
+    layout = [
+        [sg.Text("Add Workout", font=("Arial", 14))],
+        [sg.Text("ID"), sg.Input(key="ID")],
+        [sg.Text("Name"), sg.Input(key="NAME")],
+        [sg.Text("Calories"), sg.Input(key="CAL")],
+        [sg.Text("Duration (min)"), sg.Input(key="DUR")],
+        [sg.Button("Add"), sg.Button("Back")]
+    ]
+
+    window = sg.Window("Add Workout", layout)
+
+    while True:
+        event, values = window.read()
+        if event in (sg.WINDOW_CLOSED, "Back"):
+            break
+
+        if event == "Add":
+            try:
+                popup_result(add_workout(
+                    id=values["ID"],
+                    date=datetime.datetime.now(),
+                    name=values["NAME"],
+                    calories=values["CAL"],
+                    duration=values["DUR"]
+                ))
+            except Exception as e:
+                popup_result(e)
+
+    window.close()
+
+
+
+def delete_workout_window():
+    layout = [
+        [sg.Text("Delete Workout", font=("Arial", 14))],
+        [sg.Text("Workout ID"), sg.Input(key="ID")],
+        [sg.Button("Delete"), sg.Button("Back")]
+    ]
+
+    window = sg.Window("Delete Workout", layout)
+
+    while True:
+        event, values = window.read()
+        if event in (sg.WINDOW_CLOSED, "Back"):
+            break
+
+        if event == "Delete":
+            popup_result(delete_workout(int(values["ID"])))
+
+    window.close()
+
+
+def update_workout_window():
+    layout = [
+        [sg.Text("Update Workout", font=("Arial", 14))],
+        [sg.Text("Existing ID"), sg.Input(key="OLD_ID")],
+        [sg.Text("New ID"), sg.Input(key="ID")],
+        [sg.Text("Date (YYYY-MM-DD HH:MM:SS)"), sg.Input(key="DATE")],
+        [sg.Text("Name"), sg.Input(key="NAME")],
+        [sg.Text("Calories"), sg.Input(key="CAL")],
+        [sg.Text("Duration (min)"), sg.Input(key="DUR")],
+        [sg.Button("Update"), sg.Button("Back")]
+    ]
+
+    window = sg.Window("Update Workout", layout)
+
+    while True:
+        event, values = window.read()
+        if event in (sg.WINDOW_CLOSED, "Back"):
+            break
+
+        if event == "Update":
+            try:
+                workout = Workout(
+                    id=int(values["ID"]),
+                    date=parse_date(values["DATE"]),
+                    name=values["NAME"],
+                    calories=float(values["CAL"]),
+                    duration_min=float(values["DUR"])
+                )
+                popup_result(update_workout(int(values["OLD_ID"]), workout))
+            except Exception as e:
+                popup_result(e)
+
+    window.close()
+
+
+def show_workouts_window():
+    data = show_all_workouts()
+    popup_result(data)
+
+
+def sort_workouts_window():
+    layout = [
+        [sg.Text("Sort Workouts", font=("Arial", 14))],
+        [sg.Text("Key (id / date / name / calories / duration)")],
+        [sg.Input(key="KEY")],
+        [sg.Button("Sort"), sg.Button("Back")]
+    ]
+
+    window = sg.Window("Sort Workouts", layout)
+
+    while True:
+        event, values = window.read()
+        if event in (sg.WINDOW_CLOSED, "Back"):
+            break
+
+        if event == "Sort":
+            popup_result(sort_workouts(values["KEY"]))
+
+    window.close()
+
+
+def filter_workouts_window():
+    layout = [
+        [sg.Text("Filter Workouts", font=("Arial", 14))],
+        [sg.Text("Key"), sg.Input(key="KEY")],
+        [sg.Text("Value"), sg.Input(key="VALUE")],
+        [sg.Button("Filter"), sg.Button("Back")]
+    ]
+
+    window = sg.Window("Filter Workouts", layout)
+
+    while True:
+        event, values = window.read()
+        if event in (sg.WINDOW_CLOSED, "Back"):
+            break
+
+        if event == "Filter":
+            popup_result(filter_workouts((values["KEY"], values["VALUE"])))
+
+    window.close()
+
+
+
+def main_menu():
+    layout = [
+        [sg.Text("Fitness Tracker", font=("Arial", 18), justification="center")],
+        [sg.Button("Add Workout")],
+        [sg.Button("Delete Workout")],
+        [sg.Button("Update Workout")],
+        [sg.Button("Show All Workouts")],
+        [sg.Button("Sort Workouts")],
+        [sg.Button("Filter Workouts")],
+        [sg.Button("Exit")]
+    ]
+
+    window = sg.Window("Main Menu", layout, size=(300, 350))
+
+    while True:
+        event, _ = window.read()
+        if event in (sg.WINDOW_CLOSED, "Exit"):
+            break
+
+        if event == "Add Workout":
+            add_workout_window()
+        elif event == "Delete Workout":
+            delete_workout_window()
+        elif event == "Update Workout":
+            update_workout_window()
+        elif event == "Show All Workouts":
+            show_workouts_window()
+        elif event == "Sort Workouts":
+            sort_workouts_window()
+        elif event == "Filter Workouts":
+            filter_workouts_window()
+
+    window.close()
+
+
+if __name__ == "__main__":
+    main_menu()
