@@ -22,6 +22,42 @@ def popup_result(result):
 def parse_date(date_str):
     return datetime.datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
 
+def show_table_window(title: str, data: list):
+
+    if not data:
+        sg.popup("No data found.", title=title)
+        return
+
+    table_data = [
+        [w['id'], w['date'], w['name'], w['calories'], w['duration']]
+        for w in data
+    ]
+
+    total_cal, total_dur = total_caloriesDuration()
+    table_data.append([])
+    table_data.append(["Total", "", "", total_cal, total_dur])
+
+    layout = [
+        [sg.Text(title, font=("Arial", 14))],
+        [sg.Table(
+            values=table_data,
+            headings=['ID', 'Date', 'Name', 'Calories', 'Duration (min)'],
+            auto_size_columns=False,
+            col_widths=[8, 20, 20, 12, 12],
+            justification="center",
+            num_rows=15
+        )],
+        [sg.Button("Back")]
+    ]
+
+    window = sg.Window(title, layout)
+
+    while True:
+        event, _ = window.read()
+        if event in (sg.WINDOW_CLOSED, "Back"):
+            break
+
+    window.close()
 
 
 def add_workout_window():
@@ -114,10 +150,8 @@ def update_workout_window():
 def show_workouts_window():
     data = show_all_workouts()
         
-    table_data = [[workout['id'], workout['date'], workout['name'], 
-                   workout['calories'], workout['duration']] for workout in data]
-    table_data.append([])  # Empty row before totals
-    table_data.append(['Total', '', '', total_caloriesDuration()[0], total_caloriesDuration()[1]])
+    table_data = table_data_with_totals(data)
+
     layout = [
         [sg.Text("All Workouts", font=("Arial", 14))],
         [sg.Table(values=table_data, 
@@ -127,7 +161,7 @@ def show_workouts_window():
                     col_widths=[8, 20, 20, 12, 12])],
         [sg.Button("Back")]
         ]
-        
+
     window = sg.Window("All Workouts", layout)
         
     while True:
@@ -153,7 +187,12 @@ def sort_workouts_window():
             break
 
         if event == "Sort":
-            popup_result(sort_workouts(values["KEY"]))
+            try:
+                data = sort_workouts(values["KEY"])
+                table_data = table_data_with_totals(data)
+                popup_result(table_data)
+            except Exception as e:
+                popup_result(e)
 
     window.close()
 
@@ -174,7 +213,12 @@ def filter_workouts_window():
             break
 
         if event == "Filter":
-            popup_result(filter_workouts((values["KEY"], values["VALUE"])))
+            try:
+                data = filter_workouts((values["KEY"], values["VALUE"]))
+                table_data = table_data_with_totals(data)
+                popup_result(table_data)
+            except Exception as e:
+                popup_result(e)
 
     window.close()
 
