@@ -193,7 +193,7 @@ def filter_workouts_window():
 
         if event == "Filter":
             try:
-                data = filter_workouts((values["KEY"], values["VALUE"]))
+                data = filter_workouts((values["COLUMN NAME"], values["VALUE"]))
                 show_table_window("Filtered Workouts", data)
             except Exception as e:
                 popup_result(e)
