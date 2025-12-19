@@ -205,6 +205,8 @@ def filter_workouts_window():
 def main_menu():
     layout = [
         [sg.Text("Fitness Tracker", font=("Arial", 18), justification="center")],
+        [sg.Text("GitHub", font=("Arial", 12), key="GITHUB_LINK", text_color="blue", enable_events=True)],
+        [sg.HorizontalSeparator()],
         [sg.Button("Add Workout")],
         [sg.Button("Delete Workout")],
         [sg.Button("Update Workout")],
@@ -233,6 +235,8 @@ def main_menu():
             sort_workouts_window()
         elif event == "Filter Workouts":
             filter_workouts_window()
+        elif event == "GITHUB_LINK":
+            sg.webbrowser.open("https://github.com/DilmurodNabiev/FunPro")
 
     window.close()
 
