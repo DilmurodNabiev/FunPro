@@ -213,7 +213,6 @@ def main_menu():
         [sg.Button("Show All Workouts")],
         [sg.Button("Sort Workouts")],
         [sg.Button("Filter Workouts")],
-        [sg.Button("Exit")]
     ]
 
     window = sg.Window("Main Menu", layout, size=(300, 350))
