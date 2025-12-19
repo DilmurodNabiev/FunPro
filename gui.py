@@ -14,7 +14,6 @@ from main import (
 sg.theme("DarkBlue3")
 
 
-
 def popup_result(result):
     sg.popup_scrolled(str(result), title="Result", size=(60, 15))
 
@@ -91,8 +90,6 @@ def add_workout_window():
 
     window.close()
 
-
-
 def delete_workout_window():
     layout = [
         [sg.Text("Delete Workout", font=("Arial", 14))],
@@ -111,7 +108,6 @@ def delete_workout_window():
             popup_result(delete_workout(int(values["ID"])))
 
     window.close()
-
 
 def update_workout_window():
     layout = [
@@ -175,7 +171,6 @@ def sort_workouts_window():
 
     window.close()
 
-
 def filter_workouts_window():
     layout = [
         [sg.Text("Filter Workouts", font=("Arial", 14))],
@@ -199,7 +194,6 @@ def filter_workouts_window():
                 popup_result(e)
 
     window.close()
-
 
 
 def main_menu():

@@ -1,16 +1,23 @@
 [
     {
-        "id": 1,
-        "date": "2025-12-19 16:12:00",
-        "name": "running",
-        "calories": 156.0,
-        "duration": 40.0
+        "id": 564,
+        "date": "2025-12-11 15:15:15",
+        "name": "pull ups",
+        "calories": 152.0,
+        "duration": 13.0
     },
     {
-        "id": 123,
-        "date": "2025-12-19 16:15:11",
+        "id": 156,
+        "date": "2025-12-19 16:33:19",
+        "name": "pull ups",
+        "calories": 152.6,
+        "duration": 20.0
+    },
+    {
+        "id": 789,
+        "date": "2025-12-19 16:37:35",
         "name": "squats",
         "calories": 156.0,
-        "duration": 12.0
+        "duration": 123.0
     }
 ]
