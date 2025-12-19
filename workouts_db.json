@@ -1,37 +1,16 @@
 [
     {
-        "id": 112,
-        "date": "2025-12-10 11:37:26",
+        "id": 1,
+        "date": "2025-12-19 16:12:00",
+        "name": "running",
+        "calories": 156.0,
+        "duration": 40.0
+    },
+    {
+        "id": 123,
+        "date": "2025-12-19 16:15:11",
         "name": "squats",
-        "calories": 15.0,
-        "duration": 15.5
-    },
-    {
-        "id": 177,
-        "date": "2025-12-10 11:38:10",
-        "name": "push-ups",
-        "calories": 15.0,
-        "duration": 15.5
-    },
-    {
-        "id": 69,
-        "date": "2025-12-10 11:38:10",
-        "name": "pull-ups",
-        "calories": 15.0,
-        "duration": 15.5
-    },
-    {
-        "id": 2,
-        "date": "2025-12-18 11:56:34",
-        "name": "cycling",
-        "calories": 250.0,
-        "duration": 45.0
-    },
-    {
-        "id": 777,
-        "date": "2025-12-18 12:41:22",
-        "name": "java",
-        "calories": 100000.0,
-        "duration": 100000.0
+        "calories": 156.0,
+        "duration": 12.0
     }
 ]

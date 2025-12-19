@@ -12,20 +12,18 @@ class Workout:
         self.calories = calories
         self.duration = duration_min
 
-        def __str__(self):
-            return (
-                f"Workout created:\n"
-                f"--- ID: {self.id}\n"
-                f"--- Date: {self.date}\n"
-                f"--- Name: {self.name}\n"
-                f"--- Calories: {self.calories}\n"
-                f"--- Duration (minutes): {self.duration}\n"
-            )
+    def __str__(self):
+        return (
+            f"Workout created:\n"
+            f"--- ID: {self.id}\n"
+            f"--- Date: {self.date}\n"
+            f"--- Name: {self.name}\n"
+            f"--- Calories: {self.calories}\n"
+            f"--- Duration (minutes): {self.duration}\n"
+        )
 
 
-    def to_dict(self): # Loades data from JSON and turns it to Dictionary
-        if type(validation(self.id, self.date, self.name, self.calories, self.duration)) == str:
-            return validation(self.id, self.date, self.name, self.calories, self.duration)
+    def to_dict(self):
         return {
             "id": self.id,
             "date": self.date.strftime("%Y-%m-%d %H:%M:%S"),
@@ -33,8 +31,6 @@ class Workout:
             "calories": self.calories,
             "duration": self.duration
         }
-
-obj = Workout(1, datetime.datetime.now(), "Running", 300, 30)
 
 def validation(id, date, name, calories, duration) -> dict | str:
 
@@ -56,7 +52,7 @@ def validation(id, date, name, calories, duration) -> dict | str:
     except ValueError as e:
         return f"Wrokout duration(in mins) must be float or intager. \nError message: {e}"
 
-    return Workout(id, date, name, calories, duration)
+    return Workout(id, date, name, calories, duration).to_dict()
 
 def load_database() -> list:
     if not os.path.exists("workouts_db.json"):
@@ -77,10 +73,14 @@ def is_workout_id_exists(workout_id: int) -> bool:
 
 def add_workout(id: int, date: datetime, name: str, calories: float, duration: float) -> str:
     validation_result = validation(id, date, name, calories, duration)
-    if is_workout_id_exists(validation_result.id):
+
+    if isinstance(validation_result, str):
+        return validation_result
+
+    if is_workout_id_exists(validation_result["id"]):
         return "Workout ID already exists. Please use a unique ID."
     data = load_database()
-    data.append(validation_result.to_dict())
+    data.append(validation_result)
     with open("workouts_db.json", "w") as db_file:
         json.dump(data, db_file, indent=4)
 
@@ -98,7 +98,6 @@ def delete_workout(workout_id: int) -> str:
 
     return "Workout deleted successfully."
 
-
 def update_workout(workout_id: int, updated_workout: Workout) -> str:
     validation_result = validation(updated_workout.id, updated_workout.date, updated_workout.name, updated_workout.calories, updated_workout.duration)
     if type(validation_result) == str:
@@ -107,7 +106,7 @@ def update_workout(workout_id: int, updated_workout: Workout) -> str:
     data = load_database()
     for index, workout in enumerate(data):
         if workout["id"] == workout_id:
-            data[index] = updated_workout.to_dict()
+            data[index] = validation_result
             with open("workouts_db.json", "w") as db_file:
                 json.dump(data, db_file, indent=4)
             return "Workout updated successfully."
@@ -132,7 +131,7 @@ def filter_workouts(filtering_obj) -> list:
     filtered_data = [workout for workout in data if str(workout.get(key, "")).casefold() == str(value).casefold()]
     return filtered_data
 
-def total_caloriesDuration() -> set:
+def total_caloriesDuration() -> tuple:
     data = load_database()
     total_calories = sum(workout["calories"] for workout in data)
     total_duration = sum(workout["duration"] for workout in data)
